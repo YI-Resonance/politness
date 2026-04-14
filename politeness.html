@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <title>禮貌用語練習</title>
+  <style>
+    body {
+    font-family: "Microsoft JhengHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 10px;
+    line-height: 1.6;
+  }
+
+  h1 {
+    font-size: 2.9rem;
+    margin-bottom: 8px;
+  }
+
+  /* 固定畫框高度，按鈕不會上移 */
+  #image-container {
+    width: 80%;
+    height: 420px;              /* 固定高度 → 一開始就有畫框 */
+    margin: 0 auto 8px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #image-container img {
+    max-width: 75%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* ★★★ 為 caption 預留高度 ★★★ */
+  #caption {
+    margin: 8px 0 16px;
+    font-size: 2rem;
+    min-height: 2.5em;   /* 預留一行多一點的高度，即使一開始是空白 */
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 0;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  button {
+    padding: 10px 16px;
+    font-size: 2rem;
+    border-radius: 6px;
+    border: 1px solid #999;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .control-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+  }
+
+
+
+
+  button:active {
+    transform: scale(0.97);
+  }
+
+  .correct {
+    background-image: linear-gradient(135deg, rgba(0, 200, 0, 0.2) 25%, transparent 25%, transparent 50%, rgba(0, 200, 0, 0.2) 50%, rgba(0, 200, 0, 0.2) 75%, transparent 75%, transparent);
+    background-size: 12px 12px;
+    border-color: #2e7d32;
+  }
+
+  .incorrect {
+    background-image: linear-gradient(135deg, rgba(220, 0, 0, 0.2) 25%, transparent 25%, transparent 50%, rgba(220, 0, 0, 0.2) 50%, rgba(220, 0, 0, 0.2) 75%, transparent 75%, transparent);
+    background-size: 12px 12px;
+    border-color: #c62828;
+  }
+
+
+
+  </style>
+</head>
+<body>
+  <h1>禮貌用語練習</h1>
+  <div id="image-container">
+    <img id="scene-image" src="" alt="">
+  </div>
+  <div id="caption"></div>
+
+  <div class="buttons">
+    <button data-answer="唔該">唔該</button>
+    <button data-answer="多謝">多謝</button>
+    <button data-answer="請問……">請問……</button>
+    <button data-answer="對唔住">對唔住</button>
+    <button data-answer="早晨">早晨</button>
+    <button data-answer="唔緊要">唔緊要</button>
+
+
+  </div>
+
+  <div class="control-buttons">
+    <button id="clear-btn">清除</button>
+    <button id="next-btn">下一題</button>
+  </div>
+
+  <script>
+    // 題目資料：請把 image 改成你實際的圖片路徑
+    const questions = [
+      {
+        image: "images/01_bump_corridor.png",
+        caption: "不小心撞到同學。",
+        correctAnswer: "對唔住"
+      },
+      {
+        image: "images/02_spill_water_lunch.png",
+        caption: "不小心弄倒了同學的水。",
+        correctAnswer: "對唔住"
+      },
+      {
+        image: "images/03_group_work_slow_down.png",
+        caption: "一起做分組工作紙時，請同學慢一點等你。",
+        correctAnswer: "請問……"
+      },
+      {
+        image: "images/04_borrow_ball_playground.png",
+        caption: "同學借球給你玩。",
+        correctAnswer: "唔該"
+      },
+      {
+        image: "images/05_pick_up_books.png",
+        caption: "同學幫你執起掉在地上的書。",
+        correctAnswer: "唔該"
+      },
+      {
+        image: "images/06_snack_exchange_recess.png",
+        caption: "小息時，同學和你交換零食。",
+        correctAnswer: "多謝"
+      },
+      {
+        image: "images/07_draw_on_worksheet.png",
+        caption: "你不小心把鉛筆畫到了同學的工作紙。",
+        correctAnswer: "對唔住"
+      },
+      {
+        image: "images/08_comfort_after_losing_game.png",
+        caption: "遊戲中朋友輸了，你想安慰他。",
+        correctAnswer: "唔緊要"
+      },
+      {
+        image: "images/09_thank_after_group_task.png",
+        caption: "完成小組任務後對你的同學說……。",
+        correctAnswer: "多謝"
+      },
+{
+        image: "images/10_good_mouning_teacher.png",
+        caption: "上學時遇到老師。",
+        correctAnswer: "早晨"
+      },
+{
+        image: "images/11_borrow_scissors.png",
+        caption: "問同學借剪刀。",
+        correctAnswer: "請問……"
+      },
+{
+        image: "images/12_borrowing_tissue.png",
+        caption: "問同學借紙巾。",
+        correctAnswer: "請問……"
+      },
+{
+        image: "images/13_instructing.png",
+        caption: "同學教你功課。",
+        correctAnswer: "唔該"
+      },
+{
+        image: "images/14_borrowing_pencil.png",
+        caption: "問同學借鉛筆。",
+        correctAnswer: "請問……"
+      },
+
+{
+        image: "images/15_opening_lid.png",
+        caption: "同學幫你打開瓶蓋。",
+        correctAnswer: "唔該"
+      },
+
+
+    ];
+
+    const imgEl = document.getElementById("scene-image");
+    const captionEl = document.getElementById("caption");
+    const answerButtons = document.querySelectorAll(".buttons button");
+    const clearBtn = document.getElementById("clear-btn");
+    const nextBtn = document.getElementById("next-btn");
+
+    let currentQuestionIndex = -1;
+
+    // 先建立一個題目順序陣列
+let order = [];
+let pointer = 0;
+
+// Fisher–Yates 洗牌
+function shuffleQuestions() {
+  order = [...questions.keys()];
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  pointer = 0;
+}
+
+function loadNextQuestion() {
+  clearFeedback();
+
+  // 如果已經播完一輪 → 重新洗牌
+  if (pointer >= order.length) {
+    shuffleQuestions();
+  }
+
+  const qIndex = order[pointer];
+  pointer++;
+
+  const q = questions[qIndex];
+  imgEl.src = q.image;
+  imgEl.alt = q.caption;
+  captionEl.textContent = q.caption;
+
+  // ★★★ 關鍵：更新目前題目索引 ★★★
+  currentQuestionIndex = qIndex;
+}
+
+
+    function clearFeedback() {
+      answerButtons.forEach(btn => {
+        btn.classList.remove("correct", "incorrect");
+      });
+    }
+
+    answerButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        clearFeedback();
+        const chosen = btn.getAttribute("data-answer");
+        const correct = questions[currentQuestionIndex].correctAnswer;
+        if (chosen === correct) {
+          btn.classList.add("correct");
+        } else {
+          btn.classList.add("incorrect");
+        }
+      });
+    });
+
+    clearBtn.addEventListener("click", () => {
+      clearFeedback();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      loadNextQuestion();
+    });
+
+    // 初始載入第一題
+    shuffleQuestions();
+imgEl.src = "";
+captionEl.textContent = "";
+
+   
+  </script>
+</body>
+</html>
